@@ -65,16 +65,29 @@ router.put("/:id/status", async (req, res) => {
       "UPDATE tickets SET status = $1 WHERE id = $2 RETURNING *",
       [status, id]
     );
-    res
-      .status(200)
-      .json({
-        message: "Status tiket berhasil diperbarui.",
-        tiket: result.rows[0],
-      });
+    res.status(200).json({
+      message: "Status tiket berhasil diperbarui.",
+      tiket: result.rows[0],
+    });
   } catch (error) {
     console.error("Gagal memperbarui status tiket:", error);
     res.status(500).json({ message: "Gagal memperbarui status tiket." });
   }
+});
+
+// Hapus tiket berdasarkan ID
+router.delete("/:id", (req, res) => {
+  const tiketId = req.params.id;
+  const query = "DELETE FROM tickets WHERE id = $1";
+
+  pool.query(query, [tiketId], (err, result) => {
+    if (err) {
+      console.error(err);
+      res.status(500).json({ error: "Gagal menghapus tiket" });
+    } else {
+      res.status(200).json({ message: "Tiket berhasil dihapus" });
+    }
+  });
 });
 
 module.exports = router;

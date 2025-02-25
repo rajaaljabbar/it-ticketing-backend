@@ -13,6 +13,7 @@ const authRoutes = require("./routes/auth");
 app.use("/api/departments", departmentsRoutes);
 app.use("/api/tickets", ticketsRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/tickets", require("./routes/tickets"));
 
 app.listen(PORT, () => {
   console.log(`Server berjalan di http://localhost:${PORT}`);
