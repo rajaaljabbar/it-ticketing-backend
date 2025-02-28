@@ -1,3 +1,4 @@
+const path = require("path");
 const express = require("express");
 const cors = require("cors");
 const app = express();
@@ -15,6 +16,14 @@ app.use("/api/tickets", ticketsRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/tickets", require("./routes/tickets"));
 
-app.listen(PORT, () => {
-  console.log(`Server berjalan di http://localhost:${PORT}`);
+// Middleware untuk mengakses frontend
+app.use(express.static(path.resolve(__dirname, "../it-ticketing-frontend")));
+
+// Route ke index.html
+app.get("/", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "../it-ticketing-frontend/index.html"));
+});
+
+app.listen(7000, "0.0.0.0", () => {
+  console.log("Server berjalan di http://172.17.20.5:7000");
 });
